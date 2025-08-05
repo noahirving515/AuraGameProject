@@ -10,6 +10,8 @@
 #include "AuraEnemyBase.generated.h"
 
 class UWidgetComponent;
+class UBehaviorTree;
+class AAuraAIController;
 /**
  * 
  */
@@ -38,9 +40,17 @@ protected:
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnMaxHealthChanged;
 
+	UPROPERTY(EditAnywhere, Category = "AI")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+	TObjectPtr<AAuraAIController> AuraAIController;
+
 public:
 
 	AAuraEnemyBase();
+
+	virtual void PossessedBy(AController* NewController) override;
 
 	// Enemy interface functions
 	virtual void HighlightActor() override;
