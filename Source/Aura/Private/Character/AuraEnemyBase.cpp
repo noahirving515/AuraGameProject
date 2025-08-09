@@ -90,7 +90,10 @@ void AAuraEnemyBase::HitReactTagChanged(const FGameplayTag CallbackTag, int32 Ne
 {
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
-	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
+	if (AuraAIController && AuraAIController->GetBlackboardComponent())
+	{
+		AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"), bHitReacting);
+	}
 }
 
 
@@ -135,4 +138,14 @@ void AAuraEnemyBase::Die()
 {
 	SetLifeSpan(LifeSpan);
 	Super::Die();
+}
+
+void AAuraEnemyBase::SetCombatTarget_Implementation(AActor* InCombatTarget)
+{
+	CombatTarget = InCombatTarget;
+}
+
+AActor* AAuraEnemyBase::GetCombatTarget_Implementation() const
+{
+	return CombatTarget;
 }
