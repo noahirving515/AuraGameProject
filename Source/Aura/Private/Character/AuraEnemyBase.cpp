@@ -129,7 +129,7 @@ void AAuraEnemyBase::UnHighlightActor()
 	Weapon->SetRenderCustomDepth(false);
 }
 
-int32 AAuraEnemyBase::GetPlayerLevel()
+int32 AAuraEnemyBase::GetPlayerLevel_Implementation()
 {
 	return Level;
 }
