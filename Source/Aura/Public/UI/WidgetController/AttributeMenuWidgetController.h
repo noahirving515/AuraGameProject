@@ -28,6 +28,9 @@ class AURA_API UAttributeMenuWidgetController : public UAuraWidgetController
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
 	FAttributeInfoSignature AttributeInfoDelegate;
 
+	UPROPERTY(BlueprintAssignable, Category="GAS|Rewards")
+	FOnPlayerStatChangedSignature AttributePointsChangedDelegate;
+
 	protected:
 
 	UPROPERTY(EditDefaultsOnly)
