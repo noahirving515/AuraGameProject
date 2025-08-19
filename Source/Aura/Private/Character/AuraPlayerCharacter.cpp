@@ -4,15 +4,32 @@
 #include "Character/AuraPlayerCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "NavigationSystemTypes.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
+#include "NiagaraComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "UI/HUD/AuraHUD.h"
 
 AAuraPlayerCharacter::AAuraPlayerCharacter()
 {
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>("CameraBoom");
+	CameraBoom->SetupAttachment(GetRootComponent());
+	CameraBoom->SetUsingAbsoluteRotation(true);
+	CameraBoom->bDoCollisionTest = false;
+
+	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>("TopDownCameraComponent");
+	TopDownCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+	TopDownCameraComponent->bUsePawnControlRotation = false;
+	
+	LevelUpNiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("LevelUpNiagaraComponent");
+	LevelUpNiagaraComponent->SetupAttachment(GetRootComponent());
+	LevelUpNiagaraComponent->bAutoActivate = false;
+	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, RotationSpeed, 0);
 	GetCharacterMovement()->bConstrainToPlane = true;
@@ -51,7 +68,20 @@ void AAuraPlayerCharacter::AddToXP_Implementation(int32 InXp)
 
 void AAuraPlayerCharacter::LevelUp_Implementation()
 {
-	
+	MulticastLevelUpParticles();
+}
+
+void AAuraPlayerCharacter::MulticastLevelUpParticles_Implementation() const
+{
+	if (IsValid(LevelUpNiagaraComponent))
+	{
+		const FVector CameraLocation = TopDownCameraComponent->GetComponentLocation();
+		const FVector NiagaraSystemLocation = LevelUpNiagaraComponent->GetComponentLocation();
+		const FRotator ToCameraRotation = (CameraLocation - NiagaraSystemLocation).Rotation();
+		
+		LevelUpNiagaraComponent->SetWorldRotation(ToCameraRotation);
+		LevelUpNiagaraComponent->Activate(true);
+	}
 }
 
 int32 AAuraPlayerCharacter::GetXP_Implementation() const
@@ -125,3 +155,4 @@ void AAuraPlayerCharacter::InitAbilityActorInfo()
 	}
 	InitializeDefaultAttributes();
 }
+
