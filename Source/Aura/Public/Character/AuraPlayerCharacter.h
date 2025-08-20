@@ -36,6 +36,8 @@ class AURA_API AAuraPlayerCharacter : public AAuraCharacterBase, public IPlayerI
 	virtual void AddToPlayerLevel_Implementation(int32 InPlayerLevel) override;
 	virtual void AddToAttributePoints_Implementation(int32 InAttributePoints) override;
 	virtual void AddToSpellPoints_Implementation(int32 InSpellPoints) override;
+	virtual int32 GetAttributePoints_Implementation() const override;
+	virtual int32 GetSpellPoints_Implementation() const override;
 	/* End Player Interface*/
 	
 	/* Combat Interface*/

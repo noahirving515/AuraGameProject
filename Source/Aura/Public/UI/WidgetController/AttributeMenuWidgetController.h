@@ -31,6 +31,9 @@ class AURA_API UAttributeMenuWidgetController : public UAuraWidgetController
 	UPROPERTY(BlueprintAssignable, Category="GAS|Rewards")
 	FOnPlayerStatChangedSignature AttributePointsChangedDelegate;
 
+	UFUNCTION(BlueprintCallable)
+	void UpgradeAttribute(const FGameplayTag& AttributeTag);
+
 	protected:
 
 	UPROPERTY(EditDefaultsOnly)
