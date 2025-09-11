@@ -65,6 +65,7 @@ struct FAuraGameplayEffectContext : public FGameplayEffectContext
 	void SetDebuffDamage (float InDamage) { DebuffDamage = InDamage; }
 	void SetDebuffFrequency (float InFrequency) { DebuffFrequency = InFrequency; }
 	void SetDebuffDuration (float InDuration) { DebuffDuration = InDuration; }
+	void SetDamageType (TSharedPtr<FGameplayTag> InDamageType) { DamageType = InDamageType; }
 
 	/** Custom serialization, subclasses must override this */
 	virtual UScriptStruct* GetScriptStruct() const
