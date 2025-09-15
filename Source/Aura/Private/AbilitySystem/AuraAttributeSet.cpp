@@ -14,6 +14,7 @@
 #include "Interaction/CombatInterface.h"
 #include "Interaction/PlayerInterface.h"
 #include "Player/AuraPlayerController.h"
+#include "GameplayEffectComponents/TargetTagsGameplayEffectComponent.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
@@ -198,12 +199,15 @@ void UAuraAttributeSet::HandleDebuff(const FEffectProperties& Props)
 	
 	FString DebuffName = FString::Printf(TEXT("DynamicDebuff_%s"), *DamageType.ToString());
 	UGameplayEffect* Effect = NewObject<UGameplayEffect>(GetTransientPackage(), FName(DebuffName));
-
+	
 	Effect->DurationPolicy = EGameplayEffectDurationType::HasDuration;
 	Effect->Period = DebuffFrequency;
 	Effect->DurationMagnitude = FScalableFloat(DebuffDuration);
-	
-	Effect->InheritableOwnedTagsContainer.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);
+
+	UTargetTagsGameplayEffectComponent& InheritableGameplayEffectTags = Effect->AddComponent<UTargetTagsGameplayEffectComponent>();
+	FInheritedTagContainer TagContainer;
+	TagContainer.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);
+	InheritableGameplayEffectTags.SetAndApplyTargetTagChanges(TagContainer);
 
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;
 	Effect->StackLimitCount = 1;
