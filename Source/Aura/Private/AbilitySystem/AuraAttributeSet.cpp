@@ -162,6 +162,8 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 
 		if (const bool bFatal = NewHealth <= 0.f)
 		{
+			// TODO: Use death impulse
+			
 			ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
 			if (CombatInterface)
 			{
