@@ -46,6 +46,8 @@ class AURA_API AAuraPlayerCharacter : public AAuraCharacterBase, public IPlayerI
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
 
+	virtual void OnRep_Stunned() override;
+
 private:
 	
 	UPROPERTY(VisibleAnywhere)
